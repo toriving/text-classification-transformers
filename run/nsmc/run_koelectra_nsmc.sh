@@ -1,0 +1,24 @@
+python main.py \
+        --do_eval \
+        --do_train \
+        --do_predict \
+        --evaluate_during_training \
+        --output_dir data_out \
+        --data_dir data_in \
+        --cache_dir .cache \
+        --overwrite_output_dir \
+        --model koelectra \
+        --seed 2020 \
+        --save_total_limit 3 \
+        --learning_rate 5e-5 \
+        --per_device_train_batch_size 24 \
+        --per_device_eval_batch_size 128 \
+        --num_train_epochs 5.0 \
+        --max_seq_length 512 \
+        --task_name nsmc \
+        --num_labels 2 \
+        --eval_steps 250 \
+        --logging_steps 25 \
+        --save_steps 2000 \
+        --warmup_steps 1000 \
+        --gradient_accumulation_steps 4

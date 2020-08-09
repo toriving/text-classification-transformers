@@ -127,3 +127,10 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# User ignore
+.idea/
+.ipynb_checkpoints/
+data_out/
+data_in/cached*
+data_in/*.csv
