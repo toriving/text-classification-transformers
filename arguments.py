@@ -15,7 +15,10 @@ def default_logdir() -> str:
         os.mkdir("logs")
 
     current_time = datetime.now().strftime("%b%d_%H-%M-%S")
-    return os.path.join("logs", current_time + "_" + socket.gethostname() + ".log")
+    log_path = os.path.join("logs", current_time + "_" + socket.gethostname())
+    os.mkdir(log_path)
+    return log_path
+
 
 @dataclass
 class ModelArguments:

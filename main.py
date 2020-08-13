@@ -33,7 +33,7 @@ def main():
         format="%(asctime)s - %(levelname)s - %(name)s -   %(message)s",
         datefmt="%m/%d/%Y %H:%M:%S",
         level=logging.INFO if training_args.local_rank in [-1, 0] else logging.WARN,
-        handlers=[logging.FileHandler(training_args.logging_dir, 'w', encoding='utf-8'), logging.StreamHandler()]
+        handlers=[logging.FileHandler(training_args.logging_dir + "/logging.log", 'w', encoding='utf-8'), logging.StreamHandler()]
     )
     logger.warning(
         "Process rank: %s, device: %s, n_gpu: %s, distributed training: %s, 16-bits training: %s",
@@ -77,7 +77,7 @@ def main():
         args=training_args,
         train_dataset=train,
         eval_dataset=dev,
-        compute_metrics=metrics_fn
+        compute_metrics=metrics_fn,
     )
 
     # Training
