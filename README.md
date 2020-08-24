@@ -78,6 +78,14 @@ Number of data in data_in/sst5/stsa_fine_test.txt : 2210
 
 token type embedding 지원 X
 
+## Requirements
+```text
+torch==1.6.0
+torchvision==0.7.0
+tensorboard==2.3.0
+transformers==3.0.2
+```
+
 ## Usage
 
 
@@ -105,12 +113,12 @@ token type embedding 지원 X
 
 
 ## Reference
-[Huggingface Transformers](https://github.com/huggingface/transformers)
-[KoBERT](https://github.com/SKTBrain/KoBERT)
-[KoBERT-Transformers](https://github.com/monologg/KoBERT-Transformers)
-[DistilKoBERT](https://github.com/monologg/DistilKoBERT)
-[KoELECTRA](https://github.com/monologg/KoELECTRA)
-[KcBERT](https://github.com/Beomi/KcBERT)
-[NSMC](https://github.com/e9t/nsmc)
-[KorNLI](https://github.com/kakaobrain/KorNLUDatasets)
-[SST2, SST5](https://nlp.stanford.edu/sentiment/)
+[Huggingface Transformers](https://github.com/huggingface/transformers)  
+[KoBERT](https://github.com/SKTBrain/KoBERT)  
+[KoBERT-Transformers](https://github.com/monologg/KoBERT-Transformers)  
+[DistilKoBERT](https://github.com/monologg/DistilKoBERT)  
+[KoELECTRA](https://github.com/monologg/KoELECTRA)  
+[KcBERT](https://github.com/Beomi/KcBERT)  
+[NSMC](https://github.com/e9t/nsmc)  
+[KorNLI](https://github.com/kakaobrain/KorNLUDatasets)  
+[SST2, SST5](https://nlp.stanford.edu/sentiment/)  
