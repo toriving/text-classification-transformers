@@ -2,8 +2,7 @@ from transformers import AutoConfig, AutoModelForSequenceClassification, Trainer
 from modeling import MODEL, AutoTokenizer
 from datasets import ClassificationDataset
 from arguments import ModelArguments, DataTrainingArguments, TrainingArguments
-from trainer import metrics_fn
-from utils.utils import set_logger, path_checker
+from utils.utils import set_logger, path_checker, metrics_fn
 from runner import Runner
 
 

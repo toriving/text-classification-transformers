@@ -1,6 +1,6 @@
 import os
 import logging
-from trainer import prediction
+from utils.utils import prediction
 
 logger = logging.getLogger(__name__)
 
