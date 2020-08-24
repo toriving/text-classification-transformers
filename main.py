@@ -9,9 +9,11 @@ from runner import Runner
 
 def main():
 
+    # Get arguments
     parser = HfArgumentParser((ModelArguments, DataTrainingArguments, TrainingArguments))
     model_args, data_args, training_args = parser.parse_args_into_dataclasses()
 
+    # Path check and set logger
     path_checker(training_args)
     set_logger(training_args)
 
@@ -32,11 +34,11 @@ def main():
 
     # Set dataset
     train = ClassificationDataset(data_args.data_dir, tokenizer, data_args.task_name, data_args.max_seq_length,
-                                  data_args.overwrite_cache, "train") if training_args.do_train else None
+                                  data_args.overwrite_cache, mode="train") if training_args.do_train else None
     dev = ClassificationDataset(data_args.data_dir, tokenizer, data_args.task_name, data_args.max_seq_length,
-                                data_args.overwrite_cache, "dev") if training_args.do_eval else None
+                                data_args.overwrite_cache, mode="dev") if training_args.do_eval else None
     test = ClassificationDataset(data_args.data_dir, tokenizer, data_args.task_name, data_args.max_seq_length,
-                                 data_args.overwrite_cache, "test") if training_args.do_predict else None
+                                 data_args.overwrite_cache, mode="test") if training_args.do_predict else None
 
     # Set trainer
     trainer = Trainer(
@@ -47,7 +49,15 @@ def main():
         compute_metrics=metrics_fn,
     )
 
-    runner = Runner(model_name, trainer, tokenizer, training_args, test)
+    # Set runner
+    runner = Runner(
+        model_name=model_name,
+        trainer=trainer,
+        tokenizer=tokenizer,
+        training_args=training_args,
+        test=test)
+
+    # Start
     runner()
 
 
