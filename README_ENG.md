@@ -1,6 +1,10 @@
 [Korean](README.md) | [English](README_ENG.md)
 # text-classification-transformers
-Easy text classification
+**Easy text classification for everyone**
+
+TBD
+
+Korean
 
 |Model|NSMC|KoNLI|
 |:---|:---:|:---:|
@@ -9,6 +13,8 @@ Easy text classification
 |koelectra-base-v2-discriminator|0.8976|0.8193|
 |distilkobert |0.8860|0.6886|
 |kcbert-base |0.901|0.7572|
+
+English
 
 |Model|SST-2|SST-5|
 |:---|:---:|:---:|
