@@ -3,23 +3,6 @@ from dataclasses import dataclass, field
 from transformers import TrainingArguments as OriginalTrainingArguments
 
 
-def default_logdir() -> str:
-    """
-    Same default as PyTorch
-    """
-    import socket
-    import os
-    from datetime import datetime
-
-    if not os.path.exists("logs"):
-        os.mkdir("logs")
-
-    current_time = datetime.now().strftime("%b%d_%H-%M-%S")
-    log_path = os.path.join("logs", current_time + "_" + socket.gethostname())
-    os.mkdir(log_path)
-    return log_path
-
-
 @dataclass
 class ModelArguments:
     """
@@ -29,20 +12,21 @@ class ModelArguments:
     model: str = field(
         default="BERT",
         metadata={"help": "Model name (BERT, BART, ALBERT, ... )"}
-
     )
 
     model_name_or_path: str = field(
         default=None,
         metadata={"help": "Path to pretrained model or model identifier from huggingface.co/models"}
-        
     )
+
     config_name: Optional[str] = field(
         default=None, metadata={"help": "Pretrained config name or path if not the same as model_name"}
     )
+
     tokenizer_name: Optional[str] = field(
         default=None, metadata={"help": "Pretrained tokenizer name or path if not the same as model_name"}
     )
+
     cache_dir: Optional[str] = field(
         default=".cache", metadata={"help": "Where do you want to store the pretrained models downloaded from s3"}
     )
@@ -64,11 +48,11 @@ class DataTrainingArguments:
             "than this will be truncated, sequences shorter will be padded."
         },
     )
+
     overwrite_cache: bool = field(
         default=False, metadata={"help": "Overwrite the cached training and evaluation sets"}
     )
 
-        
 
 @dataclass
 class TrainingArguments(OriginalTrainingArguments):
@@ -78,4 +62,4 @@ class TrainingArguments(OriginalTrainingArguments):
         metadata={"help": "The output directory where the model predictions and checkpoints will be written."}
     )
     
-    logging_dir: Optional[str] = field(default_factory=default_logdir, metadata={"help": "Tensorboard log dir."})
+    logging_dir: Optional[str] = field(default="data_out", metadata={"help": "Tensorboard log dir."})
