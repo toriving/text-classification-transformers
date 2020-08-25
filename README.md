@@ -1,6 +1,6 @@
 [Korean](README.md) | [English](README_ENG.md)
 # Text-Classification-Transformers
-Easy text classification for everyone
+**Easy text classification for everyone**
 
 텍스트 분류 문제는 자연어 처리 분야에서 가장 쉽게 접할 수 있으며 다양한 곳에 활용될 수 있습니다.     
 
@@ -52,7 +52,7 @@ $ head data_in/train.csv
 ```text
 1,오두막집 문을 부수고 땅바닥에 쓰러졌어 [SEP] 나는 문을 박차고 들어가 쓰러졌다.
 0,어른과 아이들을 위한 재미. [SEP] 외동아이들을 위한 재미.
-2,그들이 물어본 질문들이 흥미롭거나 합법적이지 않았다는 것은 아니다(대부분은 이미 묻고 대답한 범주에 속했지만). [SEP] 이 주제에 대해 상담한 포커스 그룹에 따르면 모든 질문이 흥미로웠다.
+2,"그래, 넌 학생이 맞아 [SEP] 넌 기계공 학생이지?"
 ```
 
 `sst2`와 `sst5`의 경우 하나의 `sst_preprocess.py` 파일을 사용하여 아래와 같은 방식으로 동작합니다
@@ -76,7 +76,44 @@ Number of data in data_in/sst5/stsa_fine_test.txt : 2210
 
 ## Model
 
-token type embedding 지원 X
+[Huggingface models](https://huggingface.co/models) 에서 지원하는 모델 중 대부분의 모델을 지원합니다.
+
+하지만 `AutoModelForSequenceClassification`을 지원하지 않는 모델일 경우 지원을 하지 않습니다.
+
+[Huggingface models](https://huggingface.co/models) 지원하는 모델의 경우 Huggingface transformers와 같은 방식으로 `model_name_or_path` argument를 통하여 사용할 수 있습니다.
+
+`model_name_or_path` argument를 사용하지 않고 조금 더 간편하게 `model` argument를 사용하여 불러올 수 있는 모델이 존재합니다.
+
+해당 모델들은 아래와 같습니다.
+
+```text
+MODEL = {
+    "bert": "bert-base-multilingual-cased",
+    "albert": "albert-base-v2",
+    "bart": "facebook/bart-base",
+    "camembert": "camembert-base",
+    "distilbert": "distilbert-base-uncased",
+    "electra": "google/electra-base-discriminator",
+    "flaubert": "flaubert/flaubert_base_cased",
+    "longformer": "allenai/longformer-base-4096",
+    "mobilebert": "google/mobilebert-uncased",
+    "roberta": "roberta-base",
+    "kobert": "monologg/kobert",
+    "koelectra": "monologg/koelectra-base-v2-discriminator",
+    "distilkobert": "monologg/distilkobert",
+    "kcbert": "beomi/kcbert-base"
+}
+```
+
+`model` argument를 사용한 방법은 [shell-script](sh/nsmc/run_bert_base_multilingual_cased_nsmc.sh) 파일을 참조하면 좋습니다.
+
+**Text classification task 에서는 `token_type_embedding`이 필요 없고, 여러 모델에서 지원하지 않으므로 `token_type_embedding`은 모든 모델에서 지원하지 않도록 하였습니다.**
+
+`token_type_embedding`이 없더라도 `[SEP]` 토큰을 이용하여 두 문장을 붙여서 텍스트 분류를 하였을 때도 어느정도 [성능](#Result) 을 얻을 수 있었습니다.
+
+학습된 모델을 로드해서 테스트할 경우 `model_name_or_path`에 실제 모델 및 파일들이 저장된 폴더를 지정해주어야 합니다.
+
+**kobert와 distilkobert의 경우 학습된 모델을 로드할 때 폴더명에 `kobert`가 포함되도록 하여야합니다**
 
 ## Requirements
 ```text
@@ -88,8 +125,53 @@ transformers==3.0.2
 
 ## Usage
 
+```shell script
+python main.py \
+        --do_train \
+        --do_eval \
+        --do_predict \
+        --evaluate_during_training \
+        --output_dir <save_path> \
+        --data_dir <data_path> \
+        --cache_dir <cache_save_path> \
+        --overwrite_output_dir \
+        --model <model_name> \
+        --model_name_or_path <model_name_or_path> \
+        --seed <seed> \
+        --save_total_limit <num> \
+        --learning_rate <learning_rate> \
+        --per_device_train_batch_size <train_batch_size> \
+        --per_device_eval_batch_size <eval_batch_size> \
+        --num_train_epochs <epoch> \
+        --max_seq_length <max_length> \
+        --task_name <task_name> \
+        --num_labels <num_labels> \
+        --eval_steps <eval_steps> \
+        --logging_steps <logging_steps> \
+        --save_steps <save_steps> \
+        --warmup_steps <warmup_steps> \
+        --gradient_accumulation_steps <gradient_accumulation_steps>
+```
+
+**`model` 과 `model_name_or_path` 중 하나는 필수적으로 입력하여야 합니다.**
+**Dataset의 label 수에 맞게 `num_labels`를 조절해주어야 합니다.**
+
+Argument에 대한 설명은 [Huggingface transformers doc](https://huggingface.co/transformers/main_classes/trainer.html?highlight=arguments#trainingarguments) 또는 아래와 같은 방법으로 확인할 수 있습니다.
+```shell script
+python main.py -h
+```
+또한 기본적으로 제공된 [shell-script](sh) 파일들을 통해 예제를 확인할 수 있습니다. 
 
 ## Result
+
+본 실험의 결과는 [shell-script](sh)를 이용하여 실험하였으며, Hyper-parameter tuning을 하지 않은 테스트입니다.
+
+다양한 Hyper-parameter tuning을 통해 더 좋은 성능을 얻을 수 있으며, 본 성능은 참고용으로만 사용해주세요.
+
+**KoNLI 에서는 `token_type_embedding`을 사용하지 않고  `[SEP]` 토큰으로 두 문장을 연결 시키는 방법을 사용하였습니다.**
+
+
+**Korean**
 
 |Model|NSMC|KoNLI|
 |:---|:---:|:---:|
@@ -99,6 +181,8 @@ transformers==3.0.2
 |distilkobert |0.8860|0.6886|
 |kcbert-base |0.901|0.7572|
 
+
+**English**
 |Model|SST-2|SST-5|
 |:---|:---:|:---:|
 |bert-base-multilingual-cased|0.8775|0.4945|
@@ -114,6 +198,7 @@ transformers==3.0.2
 
 ## Reference
 [Huggingface Transformers](https://github.com/huggingface/transformers)  
+[Huggingface Models](https://huggingface.co/models)
 [KoBERT](https://github.com/SKTBrain/KoBERT)  
 [KoBERT-Transformers](https://github.com/monologg/KoBERT-Transformers)  
 [DistilKoBERT](https://github.com/monologg/DistilKoBERT)  

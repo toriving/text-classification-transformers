@@ -65,11 +65,11 @@ class AutoTokenizer:
     
     @classmethod
     def from_pretrained(cls, pretrained_model_name_or_path, *inputs, **kwargs):
-        if pretrained_model_name_or_path in ['kobert', "monologg/kobert", 'distilkobert', 'monologg/distilkobert', "monologg/kobert-lm"]:
+        if pretrained_model_name_or_path in ['kobert', "monologg/kobert", 'distilkobert', 'monologg/distilkobert', "monologg/kobert-lm"] or pretrained_model_name_or_path.find('kobert') == 0:
             return KoBertTokenizer.from_pretrained("monologg/kobert", *inputs, **kwargs)
         else:
             return OriginalAutoTokenizer.from_pretrained(pretrained_model_name_or_path, *inputs, **kwargs)
-        
+
 
 class KoBertTokenizer(PreTrainedTokenizer):
     """
