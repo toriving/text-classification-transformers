@@ -72,7 +72,7 @@ Number of data in data_in/sst5/stsa_fine_test.txt : 2210
 
 ```
 
-기본적으로 제공하지 않는 데이터의 경우 `label,text` 형태로 `data_in` 폴더 내에 `train.csv`, `dev.csv`, `test.csv`로 존재해야합니다.
+**기본적으로 제공하지 않는 데이터의 경우 `label,text` 형태로 만들어 `data_in` 폴더 내에 `train.csv`, `dev.csv`, `test.csv`로 존재해야합니다.**
 
 ## Model
 
@@ -105,7 +105,7 @@ MODEL = {
 }
 ```
 
-`model` argument를 사용한 방법은 [shell-script](sh/nsmc/run_bert_base_multilingual_cased_nsmc.sh) 파일을 참조하면 좋습니다.
+`model` argument를 사용한 방법은 [shell-script](sh/nsmc/run_bert_base_multilingual_cased_nsmc.sh#L10) 파일을 참조하세요.
 
 **Text classification task 에서는 `token_type_embedding`이 필요 없고, 여러 모델에서 지원하지 않으므로 `token_type_embedding`은 모든 모델에서 지원하지 않도록 하였습니다.**
 
