@@ -162,7 +162,7 @@ python main.py -h
 ```
 또한 기본적으로 제공된 [shell-script](sh) 파일들을 통해 예제를 확인할 수 있습니다. 
 
-실행예제는 [google colab example](https://colab.research.google.com/drive/1_54nFGE-t0rJYt-kgkbkbluWN74dC8jr?usp=sharing) 에서 확인할 수 있습니다.
+**실행예제는 [google colab example](https://colab.research.google.com/drive/1_54nFGE-t0rJYt-kgkbkbluWN74dC8jr?usp=sharing) 에서 확인할 수 있습니다.**
 
 ## Result
 
