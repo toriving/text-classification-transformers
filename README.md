@@ -8,7 +8,8 @@
 
 본 Repository는 텍스트 분류 데이터가 특정한 구조로 전처리가 되어있다면, 손쉽게 Transformers (BERT) 류의 모델로 텍스트 분류를 할 수 있도록 하는 것이 목적입니다.
 
-빠르고 편리한 구현을 위해 Huggingfcae transformers를 바탕으로 구현하였습니다.
+빠르고 편리한 구현을 위해 [Huggingface transformers](https://github.com/huggingface/transformers)의 [AutoModels](https://huggingface.co/transformers/master/model_doc/auto.html)을 바탕으로 구현하였습니다.
+
 
 ## Data Preprocessing
 텍스트 분류 작업에 해당하는 데이터는 `data_in` 폴더 내에 `train.csv`, `dev.csv`, `test.csv` 로 존재해야합니다.
