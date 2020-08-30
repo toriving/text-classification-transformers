@@ -1,28 +1,27 @@
-[Korean](README.md) | [English](README_ENG.md)
-# Text-Classification-Transformers
+[Korean](README_KR.md) | [English](README.md)
+# text-classification-transformers
 **Easy text classification for everyone**
 
-텍스트 분류 문제는 자연어 처리 분야에서 가장 쉽게 접할 수 있으며 다양한 곳에 활용될 수 있습니다.     
+Text classification tasks are most easily encountered in the area of natural language processing and can be used in various ways.
 
-다만, 주어진 데이터를 전처리를 해야하고 해당 전처리에 맞게 모델의 데이터 파이프라인을 만들어야 합니다.
+However, the given data needs to be preprocessed and the model's data pipeline must be created according to the preprocessing.
 
-본 Repository는 텍스트 분류 데이터가 특정한 구조로 전처리가 되어있다면, 손쉽게 Transformers (BERT) 류의 모델로 텍스트 분류를 할 수 있도록 하는 것이 목적입니다.
+The purpose of this Repository is to allow text classification to be easily performed with Transformers (BERT)-like models if text classification data has been preprocessed into a specific structure.
 
-빠르고 편리한 구현을 위해 [Huggingface transformers](https://github.com/huggingface/transformers)의 [AutoModels](https://huggingface.co/transformers/master/model_doc/auto.html)을 바탕으로 구현하였습니다.
-
+Implemented based on Huggingfcae transformers for quick and convenient implementation.
 
 ## Data Preprocessing
-텍스트 분류 작업에 해당하는 데이터는 `data_in` 폴더 내에 `train.csv`, `dev.csv`, `test.csv` 로 존재해야합니다.
+Data must exist as `train.csv`, `dev.csv`, and `test.csv` in the `data_in` folder.
 
-또한 각 데이터들은 `label,text` 형식으로 구성되어합니다.
+Also, each data is composed of `label,text` format.
 
-여기서 `label`이 총 2개일 경우 `0`, `1`로 표현이 되고, `N`개일 경우 `0` ~ `N-1`로 표현해야합니다.
+If there are a total of 2 `labels`, it is expressed as `0` and `1`, and if there are `N`, it should be expressed as `0` to `N-1`.
 
-현재 한국어 데이터 `nsmc`, `kornli`, 영어 데이터 `sst2`, `sst5`가 기본적으로 포함되어 있습니다.
+Korean dataset `nsmc`, `kornli`, English dataset `sst2`, and `sst5` are included by default.
 
-기본적으로 제공되는 데이터는 `utils/$dataset{nsmc, kornli, sst}_preprocess.py`를 통해 전처리를 할 수 있습니다.
+Basically provided dataset can be preprocessed through `utils/$dataset{nsmc, kornli, sst}_preprocess.py`.
 
-`nsmc`를 이용하여 `label,text` 구성의 데이터셋을 아래와 같은 방법으로 만들 수 있습니다.
+Using `nsmc`, a dataset composed of `label,text` can be created in the following way.
 
 ```shell script
 $ python utils/nsmc_preprocess.py
@@ -32,7 +31,7 @@ Number of train dataset : 120000
 Number of dev dataset : 30000
 ```
 
-결과는 `data_in` 폴더에서 `train.csv`, `dev.csv`, `test.csv`로 확인할 수 있습니다.
+The results can be checked with `train.csv`, `dev.csv`, and `test.csv` in the `data_in` folder.
 
 ```shell script
 $ head data_in/train.csv
@@ -45,11 +44,11 @@ $ head data_in/train.csv
 ...
 ```
 
-여기서 `0`은 Negative를, `1`은 Positive 레이블을 표현합니다.
+Here, `0` represents `Negative` and `1` represents `Positive` label.
 
-`kornli`와 `sst2`, `sst5`도 이와 같은 방식으로 전처리 및 데이터를 구성 할 수 있습니다.
+`kornli`, `sst2`, and `sst5` can also preprocess data in the same way.
 
-`kornli`의 경우 텍스트 분류 문제로 해결하기 위해 2개의 문장을 `[SEP]` 토큰을 이용하여 합쳐서 사용하게 됩니다.
+In the case of `kornli`, two sentences are combined and preprocessed using the `[SEP]` token.
 
 ```text
 1,오두막집 문을 부수고 땅바닥에 쓰러졌어 [SEP] 나는 문을 박차고 들어가 쓰러졌다.
@@ -57,7 +56,7 @@ $ head data_in/train.csv
 2,"그래, 넌 학생이 맞아 [SEP] 넌 기계공 학생이지?"
 ```
 
-`sst2`와 `sst5`의 경우 하나의 `sst_preprocess.py` 파일을 사용하여 아래와 같은 방식으로 동작합니다
+For 'sst2' and 'sst5', the 'sst_preprocess.py' file is used to operate in the following manner.
 
 ```shell script
 $ python utils/sst_preprocess.py --task sst2
@@ -74,19 +73,20 @@ Number of data in data_in/sst5/stsa_fine_test.txt : 2210
 
 ```
 
-**기본적으로 제공하지 않는 데이터의 경우 `label,text` 형태로 만들어 `data_in` 폴더 내에 `train.csv`, `dev.csv`, `test.csv`로 존재해야합니다.**
+**Data that is not provided by default should be created in the form of `label, text` and exist as `train.csv`, `dev.csv`, and `test.csv` in the `data_in` folder.**
 
 ## Model
 
-[Huggingface models](https://huggingface.co/models) 에서 지원하는 모델 중 대부분의 모델을 지원합니다.
+Most of the models supported by [Huggingface models](https://huggingface.co/models) are supported.
 
-하지만 `AutoModelForSequenceClassification`을 지원하지 않는 모델일 경우 지원을 하지 않습니다.
+However, if the model does not support `AutoModelForSequenceClassification` on huggingface transformers model, this repository's models are not supported.
 
-[Huggingface models](https://huggingface.co/models) 지원하는 모델의 경우 Huggingface transformers와 같은 방식으로 `model_name_or_path` argument를 통하여 사용할 수 있습니다.
+[Huggingface models](https://huggingface.co/models) Supported models can be used through the `model_name_or_path` argument in the same way as Huggingface transformers.
 
-`model_name_or_path` argument를 사용하지 않고 조금 더 간편하게 `model` argument를 사용하여 불러올 수 있는 모델이 존재합니다.
+There are models that do not use the `model_name_or_path` argument and can be loaded more easily by using the `model` argument.
 
-해당 모델들은 아래와 같습니다.
+The models are as follows.
+
 
 ```text
 MODEL = {
@@ -107,15 +107,15 @@ MODEL = {
 }
 ```
 
-`model` argument를 사용한 방법은 [shell-script](sh/nsmc/run_bert_base_multilingual_cased_nsmc.sh#L10) 파일을 참조하세요.
+For how to use the `model` argument, refer to the [shell-script](sh/nsmc/run_bert_base_multilingual_cased_nsmc.sh#L10) file.
 
-**Text classification task 에서는 `token_type_embedding`이 필요 없고, 여러 모델에서 지원하지 않으므로 `token_type_embedding`은 모든 모델에서 지원하지 않도록 하였습니다.**
+**Text classification task does not require `token_type_embedding` and is not supported by many models, so `token_type_embedding` is not supported by our models.**
 
-`token_type_embedding`이 없더라도 `[SEP]` 토큰을 이용하여 두 문장을 붙여서 텍스트 분류를 하였을 때도 어느정도 [성능](#Result) 을 얻을 수 있었습니다.
+Even if there is no `token_type_embedding`, I was able to get some [Performance](#Result) even when the text was classified by concatenating two sentences using the `[SEP]` token.
 
-학습된 모델을 로드해서 테스트할 경우 `model_name_or_path`에 실제 모델 및 파일들이 저장된 폴더를 지정해주어야 합니다.
+When reusing and testing the trained model, you must specify the folder where the actual model and files are stored in `model_name_or_path`.
 
-**kobert와 distilkobert의 경우 학습된 모델을 로드할 때 폴더명에 `kobert`가 포함되도록 하여야합니다**
+**For kobert and distilkobert, make sure to include `kobert` in the folder name when loading the trained model**
 
 ## Requirements
 ```text
@@ -155,24 +155,26 @@ python main.py \
         --gradient_accumulation_steps <gradient_accumulation_steps>
 ```
 
-**`model` 과 `model_name_or_path` 중 하나는 필수적으로 입력하여야 합니다.**
-**Dataset의 label 수에 맞게 `num_labels`를 조절해주어야 합니다.**
+**One of `model` and `model_name_or_path` must be entered.**
+**Need to adjust `num_labels` according to the number of labels in the dataset.**
 
-Argument에 대한 설명은 [Huggingface transformers doc](https://huggingface.co/transformers/main_classes/trainer.html?highlight=arguments#trainingarguments) 또는 아래와 같은 방법으로 확인할 수 있습니다.
+Argument description can be found in [Huggingface transformers doc](https://huggingface.co/transformers/main_classes/trainer.html?highlight=arguments#trainingarguments) or in the following way.
 ```shell script
 python main.py -h
 ```
-또한 기본적으로 제공된 [shell-script](sh) 파일들을 통해 예제를 확인할 수 있습니다. 
+Also, you can check the example through the [shell-script](sh) files provided by default.
 
-**실행예제는 [google colab example](https://colab.research.google.com/drive/1_54nFGE-t0rJYt-kgkbkbluWN74dC8jr?usp=sharing) 에서 확인할 수 있습니다.**
+**Execution examples can be found in [google colab example](https://colab.research.google.com/drive/1_54nFGE-t0rJYt-kgkbkbluWN74dC8jr?usp=sharing).**
+
+
 
 ## Result
 
-본 실험의 결과는 [shell-script](sh)를 이용하여 실험하였으며, Hyper-parameter tuning을 하지 않은 테스트입니다.
+The result of this experiment was tested using [shell-script](sh), and Hyper-parameter tuning was not performed.
 
-다양한 Hyper-parameter tuning을 통해 더 좋은 성능을 얻을 수 있으며, 본 성능은 참고용으로만 사용해주세요.
+Better performance can be obtained through various hyper-parameter tuning, and this performance is for reference only.
 
-**KoNLI 에서는 `token_type_embedding`을 사용하지 않고  `[SEP]` 토큰으로 두 문장을 연결 시키는 방법을 사용하였습니다.**
+**In KoNLI, we used a method of linking two sentences with a token of `[SEP]` instead of using `token_type_embedding`.**
 
 
 **Korean**
