@@ -128,7 +128,7 @@ transformers==3.0.2
 ## Usage
 
 ```shell script
-python main.py \
+$ python main.py \
         --do_train \
         --do_eval \
         --do_predict \
