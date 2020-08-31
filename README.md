@@ -1,5 +1,5 @@
 [Korean](README_KR.md) | [English](README.md)
-# text-classification-transformers
+# Text-classification-transformers
 **Easy text classification for everyone**
 
 Text classification tasks are most easily encountered in the area of natural language processing and can be used in various ways.
