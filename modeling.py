@@ -20,7 +20,7 @@ MODEL = {
     "mobilebert": "google/mobilebert-uncased",
     "roberta": "roberta-base",
     "kobert": "monologg/kobert",
-    "koelectra": "monologg/koelectra-base-v2-discriminator",
+    "koelectra": "monologg/koelectra-base-v3-discriminator",
     "distilkobert": "monologg/distilkobert",
     "kcbert": "beomi/kcbert-base"
 }
